@@ -1,7 +1,7 @@
 package com.example.demo;
 
-import java.net.URI;
 import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,23 +14,28 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+//import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+
 
 @CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
 @RestController
 public class CourseController {
 
-  @Autowired
-  private CourseService courseManagementService;
 
+ private CourseService courseManagementService;
+ 
+ @Autowired
+ Repository1 repository;
+ 
   @GetMapping("/instructors/{username}/courses")
   public List<Course> getAllCourses(@PathVariable String username) {
-    return courseManagementService.findAll();
+    return repository.findAll();
   }
 
   @GetMapping("/instructors/{username}/courses/{id}")
   public Course getCourse(@PathVariable String username, @PathVariable long id) {
-    return courseManagementService.findById(id);
+    return repository.findById(id);
   }
 
   @DeleteMapping("/instructors/{username}/courses/{id}")
@@ -55,17 +60,11 @@ public class CourseController {
   }
 
   @PostMapping("/instructors/{username}/courses")
-  public ResponseEntity<Void> createCourse(@PathVariable String username, @RequestBody Course course) {
+  public Course createCourse(@PathVariable String username, @RequestBody Course course) {
 
     Course createdCourse = courseManagementService.save(course);
-
-    // Location
-    // Get current resource url
-    /// {id}
-    URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdCourse.getId())
-        .toUri();
-
-    return ResponseEntity.created(uri).build();
+    return createdCourse;
+    
   }
 
 }
