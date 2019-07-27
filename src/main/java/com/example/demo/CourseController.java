@@ -54,16 +54,14 @@ public class CourseController {
   public ResponseEntity<Course> updateCourse(@PathVariable String username, @PathVariable long id,
       @RequestBody Course course) {
 
-    Course courseUpdated = courseManagementService.save(course);
+    //Course courseUpdated = courseManagementService.save(course);
 
     return new ResponseEntity<Course>(course, HttpStatus.OK);
   }
 
   @PostMapping("/instructors/{username}/courses")
   public Course createCourse(@PathVariable String username, @RequestBody Course course) {
-
-    Course createdCourse = courseManagementService.save(course);
-    return createdCourse;
+   return repository.save(course);
     
   }
 

@@ -9,5 +9,4 @@ public interface Repository1 extends JpaRepository<Course,Long> {
 	Course findById(long id);
 	void deleteById(long id);
 	
-	
 }
